@@ -12,8 +12,9 @@
         
         model
             .get(
-                "items[100..120].name",
-                "items[100..120].buys['price', 'quantity']"
+                // "items[100..120].name",
+                // "items[100..120].buys['price', 'quantity']"
+                "items"
             )
             .then(function(response) {
                 document.write("<pre>" + JSON.stringify(response.json, null, 4) + "</pre>");

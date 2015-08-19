@@ -3,6 +3,21 @@
 var axios = require("axios");
 
 module.exports = require("falcor-router").createClass([ {
+    route : "items",
+    get   : function(pathSet) {
+        console.log(pathSet);
+        
+        return axios.get("https://api.guildwars2.com/v2/items")
+            .then(function(resp) {
+                return resp.data.map(function(id, idx) {
+                    return {
+                        path  : [ pathSet[0], idx ],
+                        value : id
+                    };
+                });
+            });
+    }
+}, {
     route : "items[{integers:ids}]['name', 'type', 'level', 'rarity', 'icon']",
     get   : function(pathSet) {
         return axios.get("https://api.guildwars2.com/v2/items?ids=" + pathSet.ids.join(","))
