@@ -1,0 +1,17 @@
+{
+  "name": "falcor-experiment",
+  "version": "1.0.0",
+  "description": "Experimenting with falcor models",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Pat Cavit <pat@patcavit.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.13.3",
+    "falcor": "^0.1.12",
+    "falcor-express": "^0.1.2",
+    "falcor-router": "^0.2.8"
+  }
+}
