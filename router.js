@@ -20,8 +20,8 @@ module.exports = require("falcor-router").createClass([ {
                             return results.push({
                                 path  : [ "items", id, key ],
                                 value : {
-                                    "$type" : "error",
-                                    value   : "Unknown item"
+                                    $type : "error",
+                                    value : "Unknown item"
                                 }
                             });
                         }
@@ -30,8 +30,8 @@ module.exports = require("falcor-router").createClass([ {
                             return results.push({
                                 path  : [ "items", id, key ],
                                 value : {
-                                    "$type" : "error",
-                                    value   : "Unknown field"
+                                    $type : "error",
+                                    value : "Unknown field"
                                 }
                             });
                         }
@@ -65,8 +65,8 @@ module.exports = require("falcor-router").createClass([ {
                                 return results.push({
                                     path  : [ "items", id, type, field ],
                                     value : {
-                                        "$type" : "error",
-                                        value   : "Unknown item"
+                                        $type : "error",
+                                        value : "Unknown item"
                                     }
                                 });
                             }
