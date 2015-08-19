@@ -3,15 +3,20 @@
 <head>
     <script src="/node_modules/falcor/dist/falcor.browser.js"></script>
     <script>
+        /* global falcor */
+        "use strict";
+        
         var model = new falcor.Model({
-                source : new falcor.HttpDataSource('/model.json')
+                source : new falcor.HttpDataSource("/model.json")
             });
         
-        // retrieve the "greeting" key from the root of the Virtual JSON resource
-        model.
-            get("greeting").
-            then(function(response) {
-                document.write(response.json.greeting);
+        model
+            .get(
+                "items[100..120].name",
+                "items[100..120].buys['price', 'quantity']"
+            )
+            .then(function(response) {
+                document.write("<pre>" + JSON.stringify(response.json, null, 4) + "</pre>");
             });
     </script>
 </head>
