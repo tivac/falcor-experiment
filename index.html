@@ -10,15 +10,13 @@
                 source : new falcor.HttpDataSource("/model.json")
             });
         
-        model
-            .get(
-                // "items[100..120].name",
-                // "items[100..120].buys['price', 'quantity']"
-                "items"
-            )
-            .then(function(response) {
-                document.write("<pre>" + JSON.stringify(response.json, null, 4) + "</pre>");
-            });
+        model.get("items.length").then(function(response) {
+            console.log("items.length", response.json);
+        });
+        
+        model.get("items[0..10]['id', 'name']").then(function(response) {
+            console.log("items[0..10]['id', 'name']", response.json);
+        });
     </script>
 </head>
 <body>

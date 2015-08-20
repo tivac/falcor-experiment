@@ -3,22 +3,42 @@
 var axios = require("axios");
 
 module.exports = require("falcor-router").createClass([ {
-    route : "items",
+    route : "items.length",
     get   : function(pathSet) {
-        console.log(pathSet);
-        
         return axios.get("https://api.guildwars2.com/v2/items")
             .then(function(resp) {
-                return resp.data.map(function(id, idx) {
-                    return {
-                        path  : [ pathSet[0], idx ],
-                        value : id
-                    };
-                });
+                return {
+                    path  : pathSet,
+                    value : resp.data.length
+                };
             });
     }
 }, {
-    route : "items[{integers:ids}]['name', 'type', 'level', 'rarity', 'icon']",
+    route : "items[{ranges:ids}]",
+    get   : function(pathSet) {
+        // TODO: needs to support multiple ranges!
+        var size = Math.max(1, pathSet.ids[0].to - pathSet.ids[0].from),
+            page = Math.floor(pathSet.ids[0].from / size);
+        
+        return axios.get("https://api.guildwars2.com/v2/items?page=" + page + "&page_size=" + size)
+            .then(function(resp) {
+                return resp.data
+                    .sort(function(a, b) {
+                        return a.id - b.id;
+                    })
+                    .map(function(item, idx) {
+                        return {
+                            path  : [ "items", idx ],
+                            value : {
+                                $type : "ref",
+                                value : [ "itemsById", item.id ]
+                            }
+                        };
+                    });
+            });
+    }
+}, {
+    route : "itemsById[{integers:ids}]['id', 'name', 'type', 'level', 'rarity', 'icon']",
     get   : function(pathSet) {
         return axios.get("https://api.guildwars2.com/v2/items?ids=" + pathSet.ids.join(","))
             .then(function(resp) {
@@ -33,7 +53,7 @@ module.exports = require("falcor-router").createClass([ {
                     pathSet[2].forEach(function(key) {
                         if(!map[id]) {
                             return results.push({
-                                path  : [ "items", id, key ],
+                                path  : [ pathSet[0], id, key ],
                                 value : {
                                     $type : "error",
                                     value : "Unknown item"
@@ -43,7 +63,7 @@ module.exports = require("falcor-router").createClass([ {
                         
                         if(!map[id][key]) {
                             return results.push({
-                                path  : [ "items", id, key ],
+                                path  : [ pathSet[0], id, key ],
                                 value : {
                                     $type : "error",
                                     value : "Unknown field"
@@ -52,7 +72,7 @@ module.exports = require("falcor-router").createClass([ {
                         }
                         
                         results.push({
-                            path  : [ "items", id, key ],
+                            path  : [ pathSet[0], id, key ],
                             value : map[id][key]
                         });
                     });
@@ -62,7 +82,7 @@ module.exports = require("falcor-router").createClass([ {
             });
     }
 }, {
-    route : "items[{integers:ids}]['buys', 'sells']['price', 'quantity']",
+    route : "itemsById[{integers:ids}]['buys', 'sells']['price', 'quantity']",
     get   : function(pathSet) {
         return axios.get("https://api.guildwars2.com/v2/commerce/prices?ids=" + pathSet.ids.join(","))
             .then(function(resp) {
@@ -78,7 +98,7 @@ module.exports = require("falcor-router").createClass([ {
                         pathSet[3].forEach(function(field) {
                             if(!map[id]) {
                                 return results.push({
-                                    path  : [ "items", id, type, field ],
+                                    path  : [ pathSet[0], id, type, field ],
                                     value : {
                                         $type : "error",
                                         value : "Unknown item"
@@ -87,7 +107,7 @@ module.exports = require("falcor-router").createClass([ {
                             }
                             
                             results.push({
-                                path  : [ "items", id, type, field ],
+                                path  : [ pathSet[0], id, type, field ],
                                 value : map[id][type][field === "price" ? "unit_price" : field]
                             });
                         });
