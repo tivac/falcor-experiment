@@ -16,26 +16,40 @@ module.exports = require("falcor-router").createClass([ {
 }, {
     route : "items[{ranges:ids}]",
     get   : function(pathSet) {
-        // TODO: needs to support multiple ranges!
-        var size = Math.max(1, pathSet.ids[0].to - pathSet.ids[0].from),
-            page = Math.floor(pathSet.ids[0].from / size);
-        
-        return axios.get("https://api.guildwars2.com/v2/items?page=" + page + "&page_size=" + size)
-            .then(function(resp) {
-                return resp.data
-                    .sort(function(a, b) {
-                        return a.id - b.id;
-                    })
-                    .map(function(item, idx) {
-                        return {
-                            path  : [ "items", idx ],
-                            value : {
-                                $type : "ref",
-                                value : [ "itemsById", item.id ]
-                            }
-                        };
+        // Using axios all because we may have been passed multiple ranges
+        return axios.all(
+            pathSet.ids.map(function(range) {
+                var size = Math.max(1, range.to - range.from),
+                    page = Math.floor(range.from / size);
+                
+                return axios.get("https://api.guildwars2.com/v2/items?page=" + page + "&page_size=" + size)
+                    .then(function(resp) {
+                        return resp.data
+                            .sort(function(a, b) {
+                                return a.id - b.id;
+                            })
+                            .map(function(item, idx) {
+                                return {
+                                    path  : [ "items", range.from + idx ],
+                                    value : {
+                                        $type : "ref",
+                                        value : [ "itemsById", item.id ]
+                                    }
+                                };
+                            });
                     });
+            })
+        )
+        .then(function(ranges) {
+            var paths = [];
+            
+            ranges.forEach(function(range) {
+                paths = paths.concat(range);
             });
+            
+            return paths;
+        });
+        
     }
 }, {
     route : "itemsById[{integers:ids}]['id', 'name', 'type', 'level', 'rarity', 'icon']",
