@@ -40,6 +40,21 @@ module.exports = [ {
                         });
                     }
                     
+                    if(field === "ingredients") {
+                        return map[id].ingredients.forEach(function(ingredient, idx) {
+                            results.push({
+                                path  : path.concat(idx, "item"),
+                                value : {
+                                    $type : "ref",
+                                    value : [ "itemsById", ingredient.item_id ]
+                                }
+                            }, {
+                                path  : path.concat(idx, "count"),
+                                value : ingredient.count
+                            });
+                        });
+                    }
+                    
                     results.push({
                         path  : path,
                         value : map[id][field]
