@@ -10,8 +10,6 @@ var falcor = require("falcor"),
         source : new HttpDS("/model.json")
     });
 
-
-
 m.mount(document.body, {
     controller : function() {
         var ctrl = this;
