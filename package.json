@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon . --ignore ./public/",
     "debug": "iron-node .",
-    "watch": "nodemon build/browserify.js --watch ./public/ --ignore ./public/output/ --ext js,css --verbose"
+    "client": "nodemon build/browserify.js --watch ./public/ --ignore ./public/output/ --ext js,css"
   },
   "author": "Pat Cavit <pat@patcavit.com>",
   "license": "MIT",
