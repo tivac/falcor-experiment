@@ -1,0 +1,30 @@
+.items {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.item {
+    width: 200px;
+    height: 150px;
+    
+    background: rgba(255, 0, 0, 0.4);
+    
+    border: 1px solid black;
+}
+
+.details {
+    margin: 2px 0;
+}
+
+.name {
+    composes: details;
+    font-weight: bold;
+}
+
+.buys {
+    composes: details;
+}
+
+.sells {
+    composes: details;
+}

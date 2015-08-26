@@ -2,12 +2,12 @@
   "name": "falcor-experiment",
   "version": "1.0.0",
   "description": "Experimenting with falcor models",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon . --ignore output/",
+    "start": "nodemon . --ignore ./public/",
     "debug": "iron-node .",
-    "watch": "nodemon build/browserify.js --ext js,css --ignore output/"
+    "watch": "nodemon build/browserify.js --watch ./public/ --ignore ./public/output/ --ext js,css --verbose"
   },
   "author": "Pat Cavit <pat@patcavit.com>",
   "license": "MIT",

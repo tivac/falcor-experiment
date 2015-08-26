@@ -13,7 +13,7 @@ app.use("/model.json", falcor.dataSourceRoute(function() {
     return new Router();
 }));
 
-app.use(express.static("."));
+app.use(express.static("./public"));
 
 app.listen(9090, function(err) {
     if(err) {

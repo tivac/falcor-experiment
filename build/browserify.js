@@ -2,11 +2,11 @@
 
 var build = require("browserify")();
 
-build.add("./client.js");
+build.add("./public/items.js");
 
 build.plugin(require("css-modulesify"), {
   rootDir : ".",
-  output  : "./output/styles.css"
+  output  : "./public/output/styles.css"
 });
 
 build.bundle(function(err, buf) {
@@ -14,5 +14,5 @@ build.bundle(function(err, buf) {
         throw new Error(err);
     }
     
-    require("fs").writeFileSync("./output/scripts.js", buf);
+    require("fs").writeFileSync("./public/output/scripts.js", buf);
 });

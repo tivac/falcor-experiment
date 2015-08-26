@@ -1,0 +1,27 @@
+._C_C_public_items__items {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+._C_C_public_items__item {
+    width: 200px;
+    height: 150px;
+    
+    background: rgba(255, 0, 0, 0.4);
+    
+    border: 1px solid black;
+}
+
+._C_C_public_items__details {
+    margin: 2px 0;
+}
+
+._C_C_public_items__name {
+    font-weight: bold;
+}
+
+._C_C_public_items__buys {
+}
+
+._C_C_public_items__sells {
+}

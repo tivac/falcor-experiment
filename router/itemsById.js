@@ -3,7 +3,7 @@
 var axios = require("axios");
 
 module.exports = [ {
-    route : "itemsById[{integers:ids}].details[{keys:fields}]",
+    route : "itemsById[{integers:ids}]['name', 'description', 'type', 'level', 'rarity', 'vendor_value', 'id', 'icon']",
     get   : function(pathSet) {
         return axios.get(
             "https://api.guildwars2.com/v2/items?ids=" + pathSet.ids.join(",")
@@ -27,8 +27,8 @@ module.exports = [ {
                     });
                 }
                 
-                pathSet.fields.forEach(function(field) {
-                    var path = [ pathSet[0], id, pathSet[2], field ];
+                pathSet[2].forEach(function(field) {
+                    var path = [ pathSet[0], id, field ];
                     
                     if(!map[id][field]) {
                         return results.push({
@@ -70,10 +70,7 @@ module.exports = [ {
                         if(!map[id]) {
                             return results.push({
                                 path  : [ pathSet[0], id, type, field ],
-                                value : {
-                                    $type : "error",
-                                    value : "Unknown item"
-                                }
+                                value : undefined
                             });
                         }
                         
