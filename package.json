@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon ."
+    "start": "nodemon . --ignore output/",
+    "debug": "iron-node .",
+    "watch": "nodemon build/browserify.js --ext js,css --ignore output/"
   },
   "author": "Pat Cavit <pat@patcavit.com>",
   "license": "MIT",
@@ -15,7 +17,9 @@
     "express": "^4.13.3",
     "falcor": "^0.1.12",
     "falcor-express": "^0.1.2",
-    "falcor-router": "^0.2.8"
+    "falcor-http-datasource": "^0.1.1",
+    "falcor-router": "^0.2.8",
+    "mithril": "^0.2.0"
   },
   "eslintConfig": {
     "ecmaFeatures": {
@@ -71,6 +75,9 @@
     }
   },
   "devDependencies": {
-    "nodemon": "^1.4.1"
+    "browserify": "^11.0.1",
+    "css-modulesify": "^0.5.0",
+    "nodemon": "^1.4.1",
+    "sane": "^1.2.0"
   }
 }

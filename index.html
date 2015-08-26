@@ -1,24 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script src="/node_modules/falcor/dist/falcor.browser.js"></script>
-    <script>
-        /* global falcor */
-        "use strict";
-        
-        var model = new falcor.Model({
-                source : new falcor.HttpDataSource("/model.json")
-            });
-        
-        model.get("items.length").then(function(response) {
-            console.log("items.length", response.json);
-        });
-        
-        model.get("items[0..10]['id', 'name']").then(function(response) {
-            console.log("items[0..10]['id', 'name']", response.json);
-        });
-    </script>
+    <title>Falcor Testing</title>
+    <link rel="stylesheet" href="./output/styles.css" />
 </head>
 <body>
+<script src="/output/scripts.js"></script>
 </body>
 </html>
