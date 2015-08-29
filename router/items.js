@@ -1,7 +1,9 @@
 "use strict";
 
 var util  = require("util"),
-    axios = require("axios");
+    axios = require("axios"),
+    
+    $ref  = require("falcor").Model.ref;
 
 module.exports = [ {
     route : "items.length",
@@ -42,10 +44,7 @@ module.exports = [ {
                         .map(function(item, idx) {
                             return {
                                 path  : [ "items", range.from + idx ],
-                                value : {
-                                    $type : "ref",
-                                    value : [ "itemsById", item.id ]
-                                }
+                                value : $ref("itemsById." + item.id)
                             };
                         });
                 });

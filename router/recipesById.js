@@ -1,6 +1,10 @@
 "use strict";
 
-var axios = require("axios");
+var axios  = require("axios"),
+    falcor = require("falcor"),
+    
+    $ref   = falcor.Model.ref,
+    $error = falcor.Model.error;
 
 module.exports = [ {
     route : "recipesById[{integers:ids}].details[{keys:fields}]",
@@ -20,10 +24,7 @@ module.exports = [ {
                 if(!map[id]) {
                     return results.push({
                         path  : [ pathSet[0], id ],
-                        value : {
-                            $type : "error",
-                            value : "Unknown recipe"
-                        }
+                        value : $error("Unknown recipe")
                     });
                 }
                 
@@ -33,10 +34,7 @@ module.exports = [ {
                     if(!map[id][field]) {
                         return results.push({
                             path  : path,
-                            value : {
-                                $type : "error",
-                                value : "Unknown field"
-                            }
+                            value : $error("Unknown field")
                         });
                     }
                     
@@ -44,10 +42,7 @@ module.exports = [ {
                         return map[id].ingredients.forEach(function(ingredient, idx) {
                             results.push({
                                 path  : path.concat(idx, "item"),
-                                value : {
-                                    $type : "ref",
-                                    value : [ "itemsById", ingredient.item_id ]
-                                }
+                                value : $ref([ "itemsById", ingredient.item_id ])
                             }, {
                                 path  : path.concat(idx, "count"),
                                 value : ingredient.count

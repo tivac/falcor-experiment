@@ -1,7 +1,12 @@
 "use strict";
 
 var util  = require("util"),
-    axios = require("axios");
+    axios = require("axios"),
+    
+    falcor = require("falcor"),
+    
+    $ref   = falcor.Model.ref,
+    $error = falcor.Model.error;
 
 module.exports = [ {
     route : "recipes['input', 'output'][{integers:ids}].length",
@@ -39,13 +44,9 @@ module.exports = [ {
                             
                             paths.push({
                                 path  : [ pathSet[0], pathSet[1], id, x ],
-                                value : value ? {
-                                    $type : "ref",
-                                    value : [ "recipesById", value ]
-                                } : {
-                                    $type : "error",
-                                    value : "Invalid"
-                                }
+                                value : value ?
+                                    $ref([ "recipesById", value ]) :
+                                    $error("Invalid")
                             });
                         }
                     });

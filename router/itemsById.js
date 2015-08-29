@@ -1,6 +1,8 @@
 "use strict";
 
-var axios = require("axios");
+var axios = require("axios"),
+
+    $error = require("falcor").Model.error;
 
 module.exports = [ {
     route : "itemsById[{integers:ids}]['name', 'description', 'type', 'level', 'rarity', 'vendor_value', 'id', 'icon']",
@@ -20,10 +22,7 @@ module.exports = [ {
                 if(!map[id]) {
                     return results.push({
                         path  : [ pathSet[0], id ],
-                        value : {
-                            $type : "error",
-                            value : "Unknown item"
-                        }
+                        value : $error("Unknown item")
                     });
                 }
                 
@@ -33,10 +32,7 @@ module.exports = [ {
                     if(!map[id][field]) {
                         return results.push({
                             path  : path,
-                            value : {
-                                $type : "error",
-                                value : "Unknown field"
-                            }
+                            value : $error("Unknown field")
                         });
                     }
                     
