@@ -9,8 +9,8 @@ var falcor  = require("falcor-express"),
 
 app.use(require("body-parser").text({ type: "text/*" }));
 
-app.use("/model.json", falcor.dataSourceRoute(function() {
-    return new Router();
+app.use("/model.json", falcor.dataSourceRoute(function(req) {
+    return new Router(req.query.key);
 }));
 
 app.use(express.static("./public"));
