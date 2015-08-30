@@ -2,7 +2,9 @@
 
 var axios = require("axios"),
 
-    $error = require("falcor").Model.error;
+    $error = require("falcor").Model.error,
+    
+    mapIds = require("./lib/map-ids");
 
 module.exports = [ {
     route : "itemsById[{integers:ids}]['name', 'description', 'type', 'level', 'rarity', 'vendor_value', 'id', 'icon']",
@@ -10,13 +12,9 @@ module.exports = [ {
         return axios.get(
             "https://api.guildwars2.com/v2/items?ids=" + pathSet.ids.join(",")
         )
-        .then(function(resp) {
-            var map     = {},
-                results = [];
-            
-            resp.data.forEach(function(item) {
-                map[item.id] = item;
-            });
+        .then(mapIds)
+        .then(function(map) {
+            var results = [];
             
             pathSet.ids.forEach(function(id) {
                 if(!map[id]) {
@@ -52,13 +50,9 @@ module.exports = [ {
         return axios.get(
             "https://api.guildwars2.com/v2/commerce/prices?ids=" + pathSet.ids.join(",")
         )
-        .then(function(resp) {
-            var map     = {},
-                results = [];
-            
-            resp.data.forEach(function(item) {
-                map[item.id] = item;
-            });
+        .then(mapIds)
+        .then(function(map) {
+            var results = [];
             
             pathSet.ids.forEach(function(id) {
                 pathSet[2].forEach(function(type) {

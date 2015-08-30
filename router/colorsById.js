@@ -2,23 +2,15 @@
 
 var axios = require("axios"),
 
-    $error = require("falcor").Model.error;
-
-function idMap(resp) {
-    var map = {};
+    $error = require("falcor").Model.error,
     
-    resp.data.forEach(function(color) {
-        map[color.id] = color;
-    });
-    
-    return map;
-}
+    mapIds = require("./lib/map-ids");
 
 function get(ids) {
     return axios.get(
         "https://api.guildwars2.com/v2/colors?ids=" + ids.join(",")
     )
-    .then(idMap);
+    .then(mapIds);
 }
 
 function rgb(base, fn) {

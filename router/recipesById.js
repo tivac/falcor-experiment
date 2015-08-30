@@ -4,7 +4,9 @@ var axios  = require("axios"),
     falcor = require("falcor"),
     
     $ref   = falcor.Model.ref,
-    $error = falcor.Model.error;
+    $error = falcor.Model.error,
+    
+    mapIds = require("./lib/map-ids");
 
 module.exports = [ {
     route : "recipesById[{integers:ids}].details[{keys:fields}]",
@@ -12,13 +14,9 @@ module.exports = [ {
         return axios.get(
             "https://api.guildwars2.com/v2/recipes?ids=" + pathSet.ids.join(",")
         )
-        .then(function(resp) {
-            var map     = {},
-                results = [];
-            
-            resp.data.forEach(function(recipe) {
-                map[recipe.id] = recipe;
-            });
+        .then(mapIds)
+        .then(function(map) {
+            var results = [];
             
             pathSet.ids.forEach(function(id) {
                 if(!map[id]) {
