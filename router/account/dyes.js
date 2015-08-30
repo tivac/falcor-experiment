@@ -2,17 +2,9 @@
 
 var axios = require("axios"),
     
-    $ref = require("falcor").Model.ref;
-
-function auth(fn) {
-    return function(pathSet) {
-        if(!this.key) {
-            throw new Error("No API key specified");
-        }
-        
-        return fn(pathSet, this.key);
-    };
-}
+    $ref = require("falcor").Model.ref,
+    
+    auth = require("./lib/auth");
 
 module.exports = [ {
     route : "account.dyes.length",
