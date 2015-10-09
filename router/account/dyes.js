@@ -1,39 +1,32 @@
 "use strict";
 
-var axios = require("axios"),
+var Model = require("falcor").Model,
+    $ref  = Model.ref,
+    $atom = Model.atom,
     
-    $ref = require("falcor").Model.ref,
-    
+    http = require("../../lib/http"),
     auth = require("./lib/auth");
 
 module.exports = [ {
     route : "account.dyes.length",
-    get   : auth(function(pathSet, key) {
-        return axios.get("https://api.guildwars2.com/v2/account/dyes?access_token=" + key)
-            .then(function(resp) {
-                return {
-                    path  : pathSet,
-                    value : resp.data.length
-                };
-            });
+    get   : auth(function(key, pathset) {
+        return http.json("https://api.guildwars2.com/v2/account/dyes?access_token=" + key).then(function(resp) {
+            return {
+                path  : pathset,
+                value : $atom(resp.length)
+            };
+        });
     })
 }, {
-    route : "account.dyes[{ranges:ids}]",
-    get   : auth(function(pathSet, key) {
-        return axios.get("https://api.guildwars2.com/v2/account/dyes?access_token=" + key)
-            .then(function(resp) {
-                var results = [];
-                
-                pathSet.ids.forEach(function(range) {
-                    resp.data.slice(range.from, range.to + 1).forEach(function(dye, idx) {
-                        results.push({
-                            path  : [ pathSet[0], pathSet[1], range.from + idx ],
-                            value : $ref([ "colorsById", dye ])
-                        });
-                    });
-                });
-                
-                return results;
+    route : "account.dyes[{integers:indices}]",
+    get   : auth(function(key, pathset) {
+        return http.json("https://api.guildwars2.com/v2/account/dyes?access_token=" + key).then(function(resp) {
+            return pathset.indices.map(function(index) {
+                return {
+                    path  : [ pathset[0], pathset[1], index ],
+                    value : resp[index] ? $ref([ "colorsById", resp[index] ]) : $error("Unknown dye index")
+                };
             });
+        });
     })
 } ];

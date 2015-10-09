@@ -4,22 +4,21 @@
   "description": "Experimenting with falcor models",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon . --ignore ./public/",
+    "build": "node build/browserify.js",
+    "serve": "http-server . --cors -c -1",
     "debug": "iron-node .",
-    "client": "nodemon build/browserify.js --watch ./public/ --ignore ./public/output/ --ext js,css"
+    "start": "nodemon build/browserify.js --watch . --ignore output --ext js,css"
   },
   "author": "Pat Cavit <pat@patcavit.com>",
   "license": "MIT",
+  "repository": "tivac/falcor-experiment",
   "dependencies": {
-    "axios": "^0.5.4",
-    "body-parser": "^1.13.3",
-    "express": "^4.13.3",
+    "chunk": "0.0.2",
     "falcor": "^0.1.12",
-    "falcor-express": "^0.1.2",
-    "falcor-http-datasource": "^0.1.1",
-    "falcor-router": "^0.2.9",
-    "mithril": "^0.2.0"
+    "falcor-router": "github:netflix/falcor-router#7966a6238e5262655e0d216d0bdcd81a496063cf",
+    "lru-cache": "^2.7.0",
+    "mithril": "^0.2.0",
+    "object-path": "^0.9.2"
   },
   "eslintConfig": {
     "ecmaFeatures": {
@@ -36,7 +35,9 @@
       "key-spacing": [
         2,
         {
-          "align": "value "
+          "beforeColon": true,
+          "afterColon": true,
+          "align": "colon"
         }
       ],
       "no-caller": 2,
@@ -75,8 +76,9 @@
     }
   },
   "devDependencies": {
-    "browserify": "^11.0.1",
-    "css-modulesify": "^0.6.1",
-    "nodemon": "^1.4.1"
+    "browserify": "^11.2.0",
+    "css-modulesify": "^0.9.0",
+    "http-server": "^0.8.5",
+    "nodemon": "^1.7.1"
   }
 }

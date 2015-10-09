@@ -1,64 +1,39 @@
 "use strict";
 
-var util  = require("util"),
-    axios = require("axios"),
+var Model  = require("falcor").Model,
+    $ref   = Model.ref,
+    $atom  = Model.atom,
+    $error = Model.atom,
     
-    $ref  = require("falcor").Model.ref;
+    http   = require("../lib/http"),
+    map    = require("./lib/map-ids"),
+    fields = require("./lib/fields");
 
-// TODO: This is almost an exact copy of items.js!
 module.exports = [ {
     route : "colors.length",
-    get   : function(pathSet) {
-        return axios.get("https://api.guildwars2.com/v2/colors")
-            .then(function(resp) {
+    get   : function(pathset) {
+        return http.json("https://api.guildwars2.com/v2/colors")
+            .then(function(json) {
                 return {
-                    path  : pathSet,
-                    value : resp.data.length
+                    path  : pathset,
+                    value : $atom(json.length)
                 };
             });
     }
 }, {
-    route : "colors[{ranges:ids}]",
+    route : "colors[{integers:ids}]",
     get   : function(pathSet) {
-        // Using axios all because we may have been passed multiple ranges
-        return axios.all(
-            pathSet.ids.map(function(range) {
-                // Adding one to size because ranges are inclusive
-                var size  = (range.to + 1) - range.from,
-                    page  = Math.floor(range.from / size),
-                    // Determine starting index so we can filter out results
-                    start = size * page,
-                    // Sometimes page starts won't line up nicely
-                    diff  = range.from - start;
-                
-                return axios.get(
-                    util.format("https://api.guildwars2.com/v2/colors?page=%d&page_size=%d", page, size + diff)
-                )
-                .then(function(resp) {
-                    return resp.data
-                        .sort(function(a, b) {
-                            return a.id - b.id;
-                        })
-                        .filter(function(color, idx) {
-                            return start + idx >= range.from;
-                        })
-                        .map(function(color, idx) {
-                            return {
-                                path  : [ "colors", range.from + idx ],
-                                value : $ref([ "colorsById", color.id ])
-                            };
-                        });
-                });
-            })
-        )
-        .then(function(ranges) {
-            var paths = [];
-            
-            ranges.forEach(function(range) {
-                paths = paths.concat(range);
+        // TODO: figure out if there's a more efficient way to get this data
+        return http.json("https://api.guildwars2.com/v2/colors")
+        .then(function(json) {
+            return pathSet.ids.map(function(id) {
+                return {
+                    path  : [ pathSet[0], id ],
+                    value : json[id] ?
+                        $ref([ "colorsById", json[id] ]) :
+                        $error("Invalid index")
+                };
             });
-            
-            return paths;
         });
     }
 } ];

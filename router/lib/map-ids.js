@@ -1,9 +1,9 @@
 "use strict";
 
-module.exports = function idMap(resp) {
+module.exports = function idMap(data) {
     var map = {};
     
-    resp.data.forEach(function(thing) {
+    data.forEach(function(thing) {
         map[thing.id] = thing;
     });
     

@@ -75,4 +75,4 @@ $RECYCLE.BIN/
 *.lnk
 
 # App
-public/output
+output
