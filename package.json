@@ -14,8 +14,8 @@
   "repository": "tivac/falcor-experiment",
   "dependencies": {
     "chunk": "0.0.2",
-    "falcor": "^0.1.12",
-    "falcor-router": "github:netflix/falcor-router#7966a6238e5262655e0d216d0bdcd81a496063cf",
+    "falcor": "^0.1.14",
+    "falcor-router": "^0.2.11",
     "lru-cache": "^2.7.0",
     "mithril": "^0.2.0",
     "object-path": "^0.9.2"
@@ -76,9 +76,9 @@
     }
   },
   "devDependencies": {
-    "browserify": "^11.2.0",
-    "css-modulesify": "^0.9.0",
+    "browserify": "^12.0.1",
+    "css-modulesify": "^0.13.0",
     "http-server": "^0.8.5",
-    "nodemon": "^1.7.1"
+    "nodemon": "^1.8.1"
   }
 }
